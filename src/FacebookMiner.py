@@ -12,8 +12,8 @@ class FacebookMiner(object):
 	def __init__(self,access_token):
 		self.graph = facebook.GraphAPI(access_token);
 		return
-	def FindPlaces(self,lat,long):
-		arg = r'SELECT page_id FROM place WHERE distance(latitude,longitude,"'+lat+'","'+long+'")<200'
+	def FindPlaces(self,lat,long,distance):
+		arg = r'SELECT page_id FROM place WHERE distance(latitude,longitude,"'+lat+'","'+long+'")<'+str(distance)
 		args = {'q':arg}
 		response = self.graph.request('fql',args)
 		places = []
@@ -21,6 +21,10 @@ class FacebookMiner(object):
 			places.append(place['page_id'])
 		return places
 	def LoadCheckins(self,id):
-		response = self.graph.get_object(id+'/checkins')
-		return response
+		message = []
+		response = self.graph.get_object(str(id)+'/checkins')
+		for checkin in response['data']:
+			if checkin.has_key('message') == True:
+				message.append(checkin['message'])
+		return message
 	

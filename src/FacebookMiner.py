@@ -8,22 +8,19 @@ from httplib import HTTPConnection
 from httplib import HTTPSConnection
 from urllib import urlencode
 
-class FacebookMiner()
-	def __init__(self,access_token)
-		self.graph = facebook.GrapthAPI(access_token);
+class FacebookMiner(object):
+	def __init__(self,access_token):
+		self.graph = facebook.GraphAPI(access_token);
 		return
-	def FindPlaces(lat,long)
-		path = 'fql?q=SELECT page_id FROM place WHERE distance(latitude,longitude,"'+lat+'","'+long+'")<200';
-		return
-	def LoadCheckins()
-		
-		return
+	def FindPlaces(self,lat,long):
+		arg = r'SELECT page_id FROM place WHERE distance(latitude,longitude,"'+lat+'","'+long+'")<200'
+		args = {'q':arg}
+		response = self.graph.request('fql',args)
+		places = []
+		for place in response['data']:
+			places.append(place['page_id'])
+		return places
+	def LoadCheckins(self,id):
+		response = self.graph.get_object(id+'/checkins')
+		return response
 	
-access_token = sys.argv[1]
-graph = facebook.GraphAPI(access_token)
-friend = graph.get_object("me/friends");
-friendlist = friend['data']
-print friendlist[0]
-maggie = friendlist[0]
-checkin = graph.get_object(maggie['id']+"/checkins")
-print checkin

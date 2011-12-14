@@ -14,16 +14,15 @@ class FacebookMiner(object):
 		return
 
 	def find_places(self,lat,lng,distance=50):
-		arg = r'SELECT page_id FROM place WHERE distance(latitude,longitude,"'+lat+'","'+lng+'")<'+str(distance)
+		arg = r'SELECT page_id,latitude,longtitude FROM place WHERE distance(latitude,longitude,"'+lat+'","'+lng+'")<'+str(distance)
 		args = {'q':arg}
 		response = self.graph.request('fql',args)
 		places = []
 		for place in response['data']:
-			location = self.graph.get_object(place['page_id']) 
 			result = {}
 			result['pid'] = place['page_id']
-			result['lat'] = location['location']['latitude']
-			result['long'] = location['location']['longitude']
+			result['lat'] = place['latitude']
+			result['long'] = place['longitude']
 			places.append(result)
 		return places
 

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+# /usr/bin/env python
 # coding=utf-8
 
 import sys
@@ -19,7 +19,12 @@ class FacebookMiner(object):
 		response = self.graph.request('fql',args)
 		places = []
 		for place in response['data']:
-			places.append(place['page_id'])
+			location = self.graph.get_object(place['page_id']) 
+			result = {}
+			result['pid'] = place['page_id']
+			result['lat'] = location['location']['latitude']
+			result['long'] = location['location']['longitude']
+			places.append(location)
 		return places
 
 	def load_checkins(self, checkin_id):

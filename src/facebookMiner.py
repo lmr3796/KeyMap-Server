@@ -14,7 +14,7 @@ class FacebookMiner(object):
 		return
 
 	def find_places(self,lat,lng,distance=50):
-		arg = r'SELECT page_id,latitude,longtitude FROM place WHERE distance(latitude,longitude,"'+lat+'","'+lng+'")<'+str(distance)
+		arg = r'SELECT page_id,latitude,longitude FROM place WHERE distance(latitude,longitude,"'+lat+'","'+lng+'")<'+str(distance)
 		args = {'q':arg}
 		response = self.graph.request('fql',args)
 		places = []

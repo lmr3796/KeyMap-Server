@@ -24,7 +24,7 @@ class FacebookMiner(object):
 			result['pid'] = place['page_id']
 			result['lat'] = location['location']['latitude']
 			result['long'] = location['location']['longitude']
-			places.append(location)
+			places.append(result)
 		return places
 
 	def load_checkins(self, checkin_id):
